@@ -8,31 +8,6 @@
 
 
 
-
-class Group {
-private:
-    std::string friends;
-    std::string family;
-    std::string coworker;
-    std::string acquaintance;
-public:
-    // Constructor
-    Group(const std::string& fr = "", const std::string &fam = "", const std::string &co = "", const std::string& ac = ""):
-         friends(fr), family(fam), coworker(co), acquaintance(ac) {}
-    // Setters
-    void setFriends(const std::string& fr) { friends = fr; }
-    void setFamily(const std::string& fam) { family = fam; }
-    void setCoworker(const std::string& co) { coworker = co; }
-    void setAcquaintance(const std::string& ac) { acquaintance = ac; }
-
-    // Getters
-    std::string getFriends() const { return friends; }
-    std::string getFamily() const { return family; }
-    std::string getCoworker() const { return coworker; }
-    std::string getAcquaintance() const { return acquaintance; }
-};
-
-
 class User
 {
 private:
@@ -49,21 +24,21 @@ public:
 
     // Constructor
     User(const std::string& fn = "",
-        const std::string& ln = "", 
-        const std::string& ppn = "", 
+        const std::string& ln = "",
+        const std::string& ppn = "",
         const std::string& spn = "",
         const std::string& eid = "",
         const std::string& addr = "",
         const std::string& comp = "")
         //const Group& grp = Group())
-     : firstName(fn), lastName(ln), 
+        : firstName(fn), lastName(ln),
         primaryPhoneNumber(ppn), secondaryPhoneNumber(spn),
-        emailID(eid), address(addr), 
+        emailID(eid), address(addr),
         company(comp) {}
 
 
     // < overloading
-    bool operator < (const User& u) const{
+    bool operator < (const User& u) const {
         return getFirstName() < u.getFirstName();
     }
     // Setters
@@ -89,32 +64,29 @@ public:
     void displayUser() const;
 
 };
-struct comp
+// Declare global multiset with runtime comparator
+extern std::multiset<User, std::function<bool(const User&, const User&)>> userSet;
+struct comp1
 {
-    bool operator()(const User& u1, const User& u2) const {
+    bool operator()(const User& u1, const User& u2) {
         return u1.getFirstName() < u2.getFirstName();
     }
 };
 
-struct CompareByFirstName
+struct comp2
 {
-    bool operator()(const User& u1, const User& u2) const {
-        return u1.getFirstName() == u2.getFirstName();
+    bool operator()(const User& u1, const User& u2) {
+        return u1.getLastName() < u2.getLastName();
     }
 };
+void setComparator(std::function<bool(const User&, const User&)> comp);
+void insertUser(const User& u);
+void displayUsers();
 
-struct CompareByLastName
-{
-    bool operator()(const User& u1, const User& u2) const {
-        return u1.getLastName() == u2.getLastName();
-    }
-};
+void displayAllContactsSortedByName();
+void displayFirstNameAndPrimaryNumber();
+void displayContactsWithSameCompany(const std::string& company);
+void displayCountByCompany( const std::string& company);
+void findByName( const std::string& name);
 
-void displayAllContactsSortedByName(const std::vector<User>& v);
-void displayFirstNameAndPrimaryNumber(const std::vector<User>& v);
-void displayContactsWithSameCompany(const std::vector<User>& v, const std::string& company);
-void displayCountByCompany(const std::vector<User>& v, const std::string& company);
-void findByName(const std::vector<User>& v, const std::string& name);
-
-//void displayBySet(const std::multiset<User, std::function<bool(const User&, const User&)>>& set);
 
